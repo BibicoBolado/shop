@@ -1,0 +1,136 @@
+{%load staticfiles%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Leticia Cabral Design</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="{% static 'img/shortcon.png' %}"/>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="{% static 'core/css.css' %}">
+</head>
+<body id="my-body">
+<div class="container-fluid container-index" id="header">
+    <div class="row">
+        <div class="col-sm-12 text-center">
+                <div class="jumbotron">
+                        <h1 class="display-4"> Leticia Cabral Design </h1>
+                        <p class="lead">Blog, Loja Virtual e Orçamentos de Forma Simples e Rápida</p>
+                        <a class="btn btn-primary btn-lg" href="{% url 'core:contact' %}" role="button">Fale Comigo!</a>
+                </div>
+                
+        </div>
+    </div>
+
+</div>
+{% block top %} {% endblock %}
+<div class="container-fluid container-index" >
+
+    <div class="row" style="padding-bottom:0px;" >
+            <div class="col-sm-3 text-center" id="navbar" >
+                    <a href="{% url 'core:index' %}"><img class="my-image" src="{% static 'img/profile.png' %}"></a>
+                    <br>
+                    <br>
+                    <br>
+                    <div class="text-left">
+                        {% if user.is_authenticated %}
+                                <a href="{% url 'checkout:cart_view'  %}" class="navbar-iten">  Bem Vinda(o)! {{ user.profile.name }}</a>
+                        {% else %} 
+                                <a href="{% url 'accounts:login' %}" class="navbar-iten">Login</a>
+                        {% endif %}
+                      <hr>
+                      {% if not user.is_authenticated %}
+                      <a href="{% url 'checkout:cart_view' %}" class="navbar-iten">Carrinho</a>
+                      <hr>
+                      {% endif %}
+                      <a href="{% url 'core:portifolio' %}" class="navbar-iten">Portifólio</a>
+                      <hr>
+                      <a href="{% url 'core:shop' %}" class="navbar-iten">Loja</a>
+                      <hr>
+                      <a href="{% url 'core:blog' %}" class="navbar-iten">Blog</a>
+                      <hr>
+                      <a href="{% url 'core:contact' %}" class="navbar-iten">Contato</a>
+                      
+                  </div>
+                    <hr> 
+            </div>
+
+
+<br>
+<div class="col-sm-9">
+{% block menuSide %} {% endblock %}
+</div>  
+</div><!--Fica abaixo do content para nao prejudicar as colunas-->
+</div><!--Fica abaixo do content para nao prejudicar as colunas-->
+
+{% block bot %} {% endblock %}
+<br>  
+<div class="container-fluid container-index" id='footer'>
+        <div class="row">
+                <hr>
+                <div class="col-sm-4">
+                        <div class="col-3">
+                                <a href="{% url 'core:index' %}"><img class="my-image" src="{% static 'img/fb2.png' %}"></a>
+                        </div>
+                        <div class="col-3">
+                                <a href="{% url 'core:index' %}"><img class="my-image" src="{% static 'img/inst.png' %}"></a>
+                         </div>
+                        <div class="col-3">
+                                <a href="{% url 'core:index' %}"><img class="my-image" src="{% static 'img/pint.png' %}"></a>
+                        </div>
+                        <div class="col-3">
+                                <a href="{% url 'core:index' %}"><img class="my-image" src="{% static 'img/google.png' %}"></a>          
+                        </div>
+                        
+                </div>
+
+                <div class="col-sm-4 mapa text-center">
+                        <div class="col-sm-6">                        
+                                <ul>
+                                       </li><a href="{% url 'core:blog' %}"><strong>Blog</strong></a>
+                                       <br>
+                                                
+                                       <a href="{% url 'core:portifolio' %}"><strong>Portifólio</strong></a>
+                                       <br>
+                                               
+                                       <a href="{% url 'core:contact' %}"><strong>Contato</strong></a>
+                                       <br>
+                                                
+                                </ul>
+                        </div>
+                        <div class="col-sm-6">
+                                <ul>
+                                       <a href="{% url 'core:shop' %}"><strong>Loja</strong></a>
+                                       <br>                    
+                                       <a href="{% url 'core:index' %}"><strong>Login</strong></a>
+                                       <br>
+                                       <a href="#my-body"><strong>Topo</strong></a>
+                                </ul>
+
+                        </div>
+
+                        
+                </div>
+                <div class="col-sm-4 echo text-center">
+                        <h4 class="echo-h3">
+                                Todos os Direitos Reservados
+                        </h4>
+                        <h3 class="echo-h4">Studio < echo ></h3>
+                        
+                </div>
+        </div>
+    </div>
+    <br>
+
+
+
+
+
+
+  <script type="text/javascript" src="{% static 'controller/basecontroller.js' %}"> </script>
+  <script type="text/javascript" src="{% static 'base.js' %}"> </script>
+
+</body>
+</html>

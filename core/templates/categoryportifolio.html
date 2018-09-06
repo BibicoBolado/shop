@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{%load staticfiles%}
+{% block top %} 
+
+{% endblock %}  
+
+{% block menuSide %}
+<div class="container-fluid container-index">
+    <div class="row">
+        <div class="text-center">
+                <div class="jumbotron">
+                        <br>
+                        <h1 class="display-4"> {{category.name}} </h1>
+                        <h3 class="lead">{{category.description}}</h3>
+                        <h4>Encontre o Produto Ideal Para Você</h4>
+                        <h5>Caso não encontre aqui é só <input type="button"  class="btn btn-link" value="voltar" onClick="history.go(-1)"> ;)</h5>
+                        
+                </div>
+                
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block bot %} 
+
+<div class="container-fluid container-index">
+    {% for project in project %}
+    <a href="{% url 'core:itenPortifolio' project.slug %}">
+      <div class="columncatalog">
+        <img class="destaque-image-catalog" src="{{project.imagemin.url}}"  alt="{{project.name}}">
+        <div class="overlay">{{project.name}}</div>
+      </div>
+    </a>
+    {% endfor %}
+</div>
+
+{% endblock %}  

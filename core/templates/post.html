@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{%load staticfiles%}
+{% block top %} 
+
+{% endblock %}
+
+{% block menuSide %}
+<div class="container-fluid text-center">
+    <h1>{{post.name}}</h1>
+    <br>
+    <h4 class="text-left">{{post.about}}</h4>
+    <br>
+
+    <div class="row">
+        <div class="col-sm-6">
+            Tempo Leitura : {{post.timeRead}} Minutos
+        </div>
+        <div class="col-sm-6">
+            Número Leituras : {{post.nreads}}
+        </div>
+    </div>
+    <br>
+</div>  
+<img class="post-iten-image" src="{{post.imagem.url}}" alt="{{post.name}}">
+<br>
+<hr>
+
+<div class="post-iten-text">
+    {{post.text}}
+    <br/>
+    <hr>
+    <h4>Escrito Por</h4>
+    <h5>{{user.username}}</h5>
+</div>
+{% endblock %}
+
+{% block bot %}
+
+{% endblock %}  

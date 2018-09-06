@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{%load staticfiles%}
+{% block top %} 
+
+{% endblock %}
+
+{% block menuSide %}
+<div class="container-fluid text-center">
+    <h1 class="text-center">{{project.name}}</h1>
+    <h4>{{project.description}}</h4>
+    <hr>
+    <div class="row">
+    
+    {% for  image in project.image_set.all %}
+    <div class ="col-sm-4">
+        
+        <img class="img-project" style="width:100%;padding-bottom:10px;margin:0px;" src="{{image.image.url}}" alt="{{image.name}}" data-toggle="modal" data-target="#{{image.id}}">
+  
+  <!-- Modal -->
+  <div class="modal fade" id="{{image.id}}" tabindex="-1" role="dialog" aria-labelledby="{{image.id}}Label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="{{image.id}}Label">{{image.name}}</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <img style="width:100%;" src="{{image.image.url}}" alt="{{image.name}}">
+        </div>
+        <hr>
+        <div class="modal-body">
+            <p>{{image.description}}</p>
+        </div>
+      </div>
+    </div>
+  </div>   
+        
+    </div>
+    {% endfor %}
+    </div> 
+</div>  
+
+{% endblock %}
+
+{% block bot %} 
+
+
+
+{% endblock %}  

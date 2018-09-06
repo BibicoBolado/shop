@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{%load staticfiles%}
+{% block top %} 
+
+{% endblock %}
+
+{% block menuSide %}
+<nav class="navbar navbar-light bg-light" style="padding-left:30px;">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar" style="background-color: black;"></span>
+          <span class="icon-bar" style="background-color: black;"></span>
+          <span class="icon-bar" style="background-color: black;"></span>                        
+        </button>
+        <a class="navbar-brand" href="#">Loja</a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          {% for category in category %}
+            <li class="nav-iten"><a href="{% url 'core:categoryShop' category.slug %}">{{category.name}}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+</nav>
+<div class="container-fluid container-index" style="padding-top:0px;">
+    <div class="row" style="padding-top:0px;">
+        {% for destaque in destaque %}
+
+        <div class="destaque-box">
+                <img class="destaque-image" src="{{destaque.imagem.url}}"  alt="{{product.name}}" style="width:100%;max-height:320px;">
+                <div class="title-block-destaque">
+                  <h4>{{destaque.name}}</h4>
+                </div>
+                <div class="body-block">
+                    <h5>$ {{destaque.price}}</h5>
+                </div>
+                <a href="{{ destaque.get_absolute_url }}">
+                <div class="click">
+                    <h4>Compre Agora</h4>
+
+              </div>
+                </a>
+        </div>
+
+        
+        {% endfor %}
+    </div>
+</div>
+<br>
+{% endblock %}
+
+{% block bot %} 
+<div class="container-fluid container-index">
+    {{product.get_featured}}
+    {% for product in product_list %}
+
+    
+        <div class="column">
+                <div class="thumbnail destaque-box">
+                        <a href="{{ product.get_absolute_url }}"> <target="_blank">
+                          <img class="destaque-image" src="{{product.imagem.url}}"  alt="{{product.name}}" style="width:100%">
+                          <div class="title-block-product">
+                            <h5>$ {{product.price}}</h5>
+                          </div>
+                          <div class="click">
+                            <h6>{{product.category}}</h6>
+                          </div>
+                        </a>
+                          <div class="caption">
+                              <h4><strong>{{product.name}}</strong></h4>
+                            
+                          </div>
+                        </a>
+                </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}  

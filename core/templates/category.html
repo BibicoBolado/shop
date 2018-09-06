@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{%load staticfiles%}
+{% block top %} 
+
+{% endblock %}
+
+{% block menuSide %}
+<div class="container-fluid container-index">
+        <div class="row">
+            <div class="text-center">
+                    <div class="jumbotron">
+                            <br>
+                            <h1 class="display-4"> {{category.name}} </h1>
+                            <h3 class="lead">{{category.description}}</h3>
+                            <h4>Encontre o Produto Ideal Para Você</h4>
+                            <h5>Caso não encontre aqui é só <input type="button"  class="btn btn-link" value="voltar" onClick="history.go(-1)"> ;)</h5>
+                            
+                    </div>
+                    
+            </div>
+        </div>
+    
+</div>
+{% endblock %}
+
+{% block bot %} 
+<div class="container-fluid container-index">
+                {% if product %}
+                {% for product in product %}
+                    <div class="column">
+                            <div class="thumbnail destaque-box">
+                                    <a href="{{ product.get_absolute_url }}"> <target="_blank">
+                                      <img class="destaque-image" src="{{product.imagem.url}}"  alt="{{product.name}}" style="width:100%">
+                                      <div class="title-block-product">
+                                        <h5>$ {{product.price}}</h5>
+                                      </div>
+                                      <div class="click">
+                                        <h6>{{product.category}}</h6>
+                                      </div>
+                                    </a>
+                                      <div class="caption">
+                                          <h4><strong>{{product.name}}</strong></h4>
+                                        
+                                      </div>
+                                    </a>
+                            </div>
+                    </div>
+                {% endfor %}
+              
+                {% else %}
+                <div class="container-fluid container-index">
+                                <div class="row">
+                                    <div class="text-center">
+                                            <div class="jumbotron">
+                                                <h2>Ainda não há nada na categoria {{category.name}}</h2>
+                                                <h3>Logo teremos Produtos Lindos nessa categoria</h3>
+                                            </div>
+                                            
+                                    </div>
+                                </div>
+                            
+                </div>
+                {% endif %}
+                
+</div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{%load staticfiles%}
+{% block top %} 
+
+{% endblock %}
+
+{% block menuSide %}
+<div class="container-fluid container-index">
+        <div class="row">
+            <div class="text-center">
+                    <div class="jumbotron">
+                            <br>
+                            <h1 class="display-4"> {{category.name}} </h1>
+                            <h3 class="lead">{{category.description}}</h3>
+                            <h4>Postagens Semanais da menina mais FOFA DE GUAPI</h4>
+                            <h5> <input type="button"  class="btn btn-link" value="voltar" onClick="history.go(-1)"> ;)</h5>
+                            
+                    </div>
+                    
+            </div>
+        </div>
+    
+</div>
+
+<div class="container-fluid container-index">
+        {% if postbot %}
+        <div class="container">
+
+
+                <div class="col-sm-8">
+                  {% for postbot in postbot %}
+                  <div class="row">
+                      <div class="col-sm-6">
+                        <a href="{% url 'core:itenBlog' postbot.slug %}"><img class="img-post-list" src="{{postbot.imgcapa.url}}"  alt="{{postbot.name}}" style="width:100%"></a>
+                      </div>
+                      <div class="col-sm-6">
+                        <a href="{% url 'core:itenBlog' postbot.slug %}"><h3>{{postbot.name}}</h3></a>
+                          <p>{{postbot.cutAbout}} <a href="{% url 'core:itenBlog' postbot.slug %}"><strong>...</strong></a> </p>
+                          <p style="color:lightgreen;">Nº Leituras: {{postbot.nreads}}</p>
+                          <p style="color:lightpink;">{{postbot.created.day}} / {{postbot.created.month}}</p>
+                        </div>
+                  </div>
+                  {% endfor %}
+                </div>
+              
+              
+              <div class="col-sm-4">
+              
+              </div>
+      
+        {% else %}
+        <div class="container-fluid container-index">
+                        <div class="row">
+                            <div class="text-center">
+                                    <div class="jumbotron">
+                                        <h2>Ainda não há nada na categoria {{category.name}}</h2>
+                                        <h3>Logo teremos Produtos Lindos nessa categoria</h3>
+                                    </div>
+                                    
+                            </div>
+                        </div>
+                    
+        </div>
+        {% endif %}
+        
+</div>
+{% endblock %}
+
+{% block bot %} 
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{%load staticfiles%}
+{% block top %} 
+
+{% endblock %}
+
+{% block menuSide %}
+<form id="formContact">
+    {% for field in form %}
+    <script>console.log({{forloop.counter}})</script>
+    {% if forloop.last%}
+        <br>
+        <div id="file">
+    {% endif %}
+        {{field.label_tag}}
+        <br>
+        {{field}}
+    {% if forloop.last%}
+        </div>
+    {% endif %}
+    {% endfor %}
+    <br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<script type="text/javascript" src="{% static 'controller/contactcontroller.js' %}"> </script>
+<script type="text/javascript" src="{% static 'contatact.js' %}"> </script>
+{% endblock %}
+
+{% block bot %} 
+
+
+
+{% endblock %}  

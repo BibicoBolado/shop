@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{%load staticfiles%}
+{% block top %} 
+
+
+{% endblock %}
+
+{% block menuSide %}
+<nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+              <span class="icon-bar" style="background-color: black;" ></span>
+              <span class="icon-bar" style="background-color: black;"></span>
+              <span class="icon-bar" style="background-color: black;"></span>                        
+            </button>
+            <a class="navbar-brand" href="#">Blog</a>
+          </div>
+          <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                
+              </li>
+
+              {% for category in category %}
+              <li class="nav-iten"><a href="{% url 'core:categoryBlog' category.slug%}">{{category.name}}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+</nav>
+<!--FINAL DA BARRA DE NAGEVAÇÃO-->
+<div class="container">
+
+
+  <div class="col-sm-8">
+    {% for postbot in postbot %}
+    <div class="row">
+        <div class="col-sm-6">
+          <a href="{% url 'core:itenBlog' postbot.slug %}"><img class="img-post-list" src="{{postbot.imgcapa.url}}"  alt="{{postbot.name}}" style="width:100%"></a>
+        </div>
+        <div class="col-sm-6">
+          <a href="{% url 'core:itenBlog' postbot.slug %}"><h3>{{postbot.name}}</h3></a>
+            <p>{{postbot.cutAbout}} <a href="{% url 'core:itenBlog' postbot.slug %}"><strong>...</strong></a> </p>
+            <p style="color:lightgreen;">Nº Leituras: {{postbot.nreads}}</p>
+            <p style="color:lightpink;">{{postbot.created.day}} / {{postbot.created.month}}</p>
+          </div>
+    </div>
+    {% endfor %}
+  </div>
+  
+  
+  <div class="col-sm-4">
+  
+  </div>
+  </div>
+{% endblock %}
+
+{% block bot %} 
+
+{% endblock %}  

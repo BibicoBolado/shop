@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{%load staticfiles%}
+{% block top %} 
+
+{% endblock %}
+
+{% block menuSide %}
+<div class="container-fluid">
+    {% if messages %}
+            {% for message in messages %}
+            <br>
+                <div class="alert alert-{{message.tags}}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+    {% endif %}
+<h1>{{product.name}}</h1>
+
+<h4>Descrição:</h5>
+<h5>{{product.description}}</h5>
+<hr>
+    <div class="col-sm-6">
+        <div class="row">
+            <img class="destaque-image" src="{{product.imagem.url}}"  alt="{{product.name}}" style="width:100%">
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <h4> Categoria: <a href="{% url 'core:categoryShop' product.category.slug %}">{{product.category}}</a></h4>
+        <h4>Preço <strong>R$: {{product.price}}</strong></h4>
+        <a class="btn btn-primary btn-sm" href="{% url 'checkout:create_cartitem' product.slug %}" role="button">Adicionar ao Carrinho</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block bot %} 
+
+
+
+{% endblock %}  

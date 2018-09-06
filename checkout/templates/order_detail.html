@@ -1,0 +1,54 @@
+{% extends 'baseUser.html' %}
+{% load widget_tweaks %}
+
+{% block navuser %}
+
+{% if messages %}
+{% for message in messages %}
+    <div class="alert alert-{{message.tags}}">
+        {{ message }}
+    </div>
+{% endfor %}
+{% endif %}
+<div class="page-header">
+    <h1>Pedido #{{order.pk}}</h1>
+</div>
+<dl class="dl-horizontal">
+    <dt>
+        Total R$:
+    </dt>
+    <dd>
+        {{ order.total|floatformat:"2" }}
+    </dd>
+    <dt>
+        Situação:
+    </dt>
+    <dd>
+        {{order.get_status_display}}
+    </dd>
+    <dt>
+       Data:
+    </dt>
+    <dd>
+        {{order.created|date:"d/m/Y H:i"}}
+    </dd>
+    <dt>
+        Forma de Pagamento:
+    </dt>
+    <dd>
+        {{order.get_payment_option_display}}
+    </dd>
+</dl>
+<h3>Itens do Pedido</h3>
+
+{% for iten in order.Itens.all %}
+<dl class="dl-horizontal">
+    <dt>Nome:</dt>
+    <dd>{{iten.product}}</dd>
+    <dt>Quantidade:</dt>
+    <dd>{{iten.quantity}}</dd>
+    <dt>Preço:</dt>
+    <dd>{{iten.price|floatformat:"2"}}</dd>
+</dl>
+{% endfor %}
+{% endblock %}
