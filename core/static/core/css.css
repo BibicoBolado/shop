@@ -1,4 +1,12 @@
-.my-image{
+.jumbotron{ /*banner superior do site*/
+    background-color: transparent;
+    padding-bottom: 10px;
+}
+
+#header{/*banner superior do site*/
+    background-color:pink;
+}
+.my-image{ /*Logo na coluna lateral*/
     padding-top: 25px;
     padding-left: 20px;
     width: 70%;
@@ -6,6 +14,13 @@
     text-align: right;
     
 }
+
+.container-index{ /*toda lateral do site ta aqui*/
+    padding-top: 0px;
+    padding-left: 60px;
+    padding-right: 60px;
+}
+
 
 .column {
     float: left;
@@ -78,18 +93,9 @@ hr{
     padding-top: 0px;
     margin-top: 0px;
 }
-.container-index{
-    padding-top: 0px;
-    padding-left: 60px;
-    padding-right: 60px;
-}
-.jumbotron{
-    background-color: transparent;
-    padding-bottom: 10px;
-}
-#header{
-    background-color:pink;
-}
+
+
+
 
 
 
@@ -133,7 +139,7 @@ input[type=text] {
 }
 
 .col-3{
-    width: 25%;
+    width: 33%;
     float: left;
     padding-bottom: 30px;
 }
@@ -155,9 +161,6 @@ hrv{
     width:          1px;       
 }
 
-#container-index::before{
-    padding:0px;
-}
 
 
 
@@ -233,6 +236,27 @@ hrv{
 }
 
 @media screen and (max-width:700px) {
+
+    .container-index{ 
+        padding-top: 0px;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .my-image{
+        padding: 0px;
+        padding-top: 50px;
+        width: 90%;
+    }
+
+    .jumbotron{
+        padding: 0px;
+    }
+
+    .col-3{
+        padding: 30px;
+
+    }
 
     .columncatalog {
         width: 100%;
