@@ -30,7 +30,7 @@ class RegisterForm(UserCreationForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields  =   ('bio','birthday','name')
+        fields  =   ('name','birthday','address','number','uf','complemento','cep')
         widgets = {
             'birthday': forms.TextInput(attrs={"type":"date"}),
         }

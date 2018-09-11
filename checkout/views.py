@@ -13,6 +13,10 @@ from django.http import HttpResponse
 from pagseguro import PagSeguro
 
 
+def favorites(request):
+    template_name = 'favorites.html'
+    return render (request,template_name)
+
 class CreateCartItemView(RedirectView):
     def get_redirect_url(self,*args,**kwargs):
         product     = get_object_or_404(
@@ -58,7 +62,14 @@ class CartView(TemplateView):
 
     def get_context_data(self,**kwargs):
         context = super(CartView,self).get_context_data(**kwargs)
-        context['formset']  =   self.get_formset()
+        context['formset']          =   self.get_formset()
+        context['peso']             =   settings.PESO_PLANNER
+        context['comprimento']      =   settings.COMPRIMENTO
+        context['largura']          =   settings.LARGURA
+        context['altura']           =   settings.ALTURA
+        context['origem']           =   settings.CEP_ORIGEM
+        context['formato']          =   settings.FORMATO
+
         return context
 
     def post(self,request,*args,**kwargs):

@@ -28,7 +28,7 @@
 
               <li class="nav-iten"><a href="{% url 'checkout:cart_view' %}">Carrinho</a></li>
               {% if user.is_authenticated %}
-              <li class="nav-iten"><a href="#">Favoritos</a></li>
+              <li class="nav-iten"><a href="{% url 'checkout:favorites' %}">Favoritos</a></li>
               <li class="nav-iten"><a href="{% url 'checkout:order_list' %}">Meus Pedidos</a></li>
               <li class="nav-iten"><a href="{% url 'accounts:data' %}">Dados</a></li>
               <li class="nav-iten"><a href="{% url 'accounts:logout' %}">Sair</a></li>

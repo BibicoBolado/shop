@@ -14,7 +14,6 @@
         <h3>Dados</h3>
         <li>Username: {{ user.username }}</li>
         <li>Nome: {{ user.profile.name }}</li>
-        <li>Descrição: {{ user.profile.bio }}</li>
         <li>Aniversário: {{ user.profile.birthday }}</li>
         <h4>Para atualizar sua conta clique <a href="{% url 'accounts:update_profile' %}">Aqui</a></h4>
     </div>

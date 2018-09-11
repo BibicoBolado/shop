@@ -66,9 +66,16 @@ def data(request):
 @login_required
 def update_profile(request):
     if request.method == 'POST':
-        profile_form = ProfileForm(request.POST, instance=request.user.profile)
+        profile_form = ProfileForm(request.POST)
         if profile_form.is_valid():
-            profile_form.save()
+            for field in profile_form.changed_data:
+                if field == 'name':
+                    request.user.profile.name = profile_form.cleaned_data[field]
+                elif field == 'birthday':
+                    request.user.profile.birthday = profile_form.cleaned_data[field]
+                print(field)
+                print(profile_form.cleaned_data[field])
+            request.user.profile.save()
             messages.success(request,('Perfil Atualizado com Sucesso!'))
             return redirect('accounts:data')
         else:

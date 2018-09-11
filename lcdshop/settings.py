@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #libs#
     'widget_tweaks',
+    'corsheaders',
     #apps#
     'core',
     'shop',
@@ -58,12 +59,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsPostCsrfMiddleware',
 
-    'checkout.middleware.cart_iten_middleware'
+    'checkout.middleware.cart_iten_middleware',
 ]
 
 ROOT_URLCONF = 'lcdshop.urls'
-
+CORS_ORIGIN_ALLOW_ALL = True
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -163,3 +166,11 @@ try:
     from .local_settings import *
 except ImportError:
         pass
+
+###CONFIGURAÇÃO FRETE###
+PESO_PLANNER        = 1 
+COMPRIMENTO         = 30
+LARGURA             = 30
+ALTURA              = 20
+CEP_ORIGEM          = 25905860
+FORMATO             = 1
