@@ -10,14 +10,28 @@
     </div>
 {% endfor %}
 {% endif %}
+
 <div class="page-header">
-    <h1>Escolha a Forma de Pagamento:</h1>
+    <h1>Escolha a Forma de Pagamento {{order.user.profile.name}}</h1>
 </div>
-<div class="col-sm-12">Pedido #{{order.pk}}</div>
+
+<div class="col-sm-12"><h2>Pedido #{{order.pk}}</h2></div>
+<div class="col-sm-12"><h4>Prazo de Entrega {{order.prazo}} dias </h4></div>
+<div class="col-sm-12"><h4>Valor Produtos R$: {{order.total|floatformat:3}} </h4></div>
+<div class="col-sm-12"><h4>Valor Frete    R$: {{order.frete|floatformat:3}} </h4></div>
+<div class="col-sm-12"><h4>Valor Total    R$: {{order.totalCompra|floatformat:3}}  </h4></div>
+
+
+
+<div class="row">
+    <br>
+    <br>
+</div>
+
 <div class="col-sm-6 text-center">
-    <a href="{% url 'checkout:pagseguro_view' order.pk %} " class="btn btn-success">PagSerugo</a>
+    <a href="{% url 'checkout:pagseguro_view' order.pk %} " class="btn btn-success">PagSeguro</a>
 </div>
 <div class="col-sm-6 text-center">
-    <a href="#" class="btn btn-primary">PayPal</a>
+    <a href="#" class="btn btn-primary">Depósito ou Transferencia</a>
 </div>
 {% endblock %}

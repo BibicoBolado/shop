@@ -38,8 +38,8 @@ class CartIten(models.Model):
         return '{} {}'.format(self.product,self.quantity)
 
 class OrderManager(models.Manager):
-    def create_order(self,user,cart_itens):
-        order = self.create(user=user)
+    def create_order(self,user,cart_itens,frete,prazo):
+        order = self.create(user=user,frete=frete,prazo=prazo)
         for cart_iten in cart_itens:
             order_iten = OrderIten.objects.create(
                 order=order,quantity=cart_iten.quantity,product=cart_iten.product,
@@ -53,19 +53,32 @@ class Order(models.Model):
         (0,'Aguardando Pagamento'),
         (1,'Compra Concluida'),
         (2,'Compra Cancelada'),
+        (3,'Está Chegando!'),
     )
     PAYMENT_OPTIONS_CHOICES = (
         ('pagseguro','PagSeguro'),
         ('paypal','Paypal'),
         ('boleto','Boleto')
     )
+
+
+
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete='CASCADE',verbose_name='Usuário')
     status = models.IntegerField(
         'Situação',choices=STATUS_CHOICES,default=0,blank=True)
     payment_option = models.CharField(
         'Opção de Pagamento',choices=PAYMENT_OPTIONS_CHOICES,default='pagseguro',blank=True,max_length=20)
+
+
     created = models.DateTimeField('Criado em',auto_now_add=True)
     modified= models.DateTimeField('Atualizado em', auto_now=True)
+
+
+    frete       = models.FloatField('Valor Frete',blank=True,null=True)
+    prazo       = models.IntegerField('Prazo Entrega',blank=True,null=True)
+    rastreio    = models.CharField('Código Rastreio',blank=True,null=True,max_length=100)
+
+
     objects = OrderManager()
     class Meta:
         verbose_name = 'Pedido'
@@ -84,6 +97,9 @@ class Order(models.Model):
              )
          )
          return aggregate_queryset['total']
+
+    def totalCompra(self):
+        return self.frete + float(self.total())
     
     def pagseguro_update_status(self, status):
         if status == '3':
@@ -101,6 +117,8 @@ class Order(models.Model):
         pg.sender = {
             'email': self.user.email
         }
+        pg.extra_amount = '%.2f' % self.frete
+        print(self.frete)
         pg.reference_prefix = ''
         pg.shipping = None
         pg.reference = self.pk
@@ -113,10 +131,9 @@ class Order(models.Model):
                     'amount': '%.2f' % iten.price
                 }
             )
-        print('useremail = {} PAGSEGURO_TOKEN = {}, PAGSEGURO_EMAIL = {}'.format(self.user.email,
-             settings.PAGSEGURO_TOKEN, settings.PAGSEGURO_EMAIL))
-        print(pg.items)
+
         return pg
+        
 
 class OrderIten(models.Model):
     order       = models.ForeignKey(Order,verbose_name='Pedido',related_name='Itens',on_delete='CASCADE')

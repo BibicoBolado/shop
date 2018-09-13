@@ -48,7 +48,7 @@ def reg(request):
                 password=form.cleaned_data['password1']
                 )
             login(request,user)
-            messages.success(request,('Você pode terminar seu cadastro quando quiser'))
+            messages.success(request,('Você precisa terminar seu cadastro para finalizar a compra'))
             return redirect('accounts:update_profile')
         else:
             print(form.errors )
@@ -73,8 +73,21 @@ def update_profile(request):
                     request.user.profile.name = profile_form.cleaned_data[field]
                 elif field == 'birthday':
                     request.user.profile.birthday = profile_form.cleaned_data[field]
-                print(field)
-                print(profile_form.cleaned_data[field])
+                elif field == 'address':
+                    request.user.profile.address = profile_form.cleaned_data[field]
+                elif field == 'number':
+                    request.user.profile.number = profile_form.cleaned_data[field]
+                elif field == 'uf':
+                    request.user.profile.uf = profile_form.cleaned_data[field]
+                elif field == 'complemento':
+                    request.user.profile.complemento = profile_form.cleaned_data[field]
+                elif field == 'cep':
+                    request.user.profile.cep = profile_form.cleaned_data[field]
+                elif field == 'cidate':
+                    request.user.profile.cidate = profile_form.cleaned_data[field]
+                elif field == 'bairro':
+                    request.user.profile.bairro = profile_form.cleaned_data[field]
+                
             request.user.profile.save()
             messages.success(request,('Perfil Atualizado com Sucesso!'))
             return redirect('accounts:data')

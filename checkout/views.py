@@ -11,6 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.http import HttpResponse
 from pagseguro import PagSeguro
+from django.db.models import Q
 
 
 def favorites(request):
@@ -82,21 +83,13 @@ class CartView(TemplateView):
         return self.render_to_response(context)
 cart_view = CartView.as_view()
 
+
 class CheckoutView(LoginRequiredMixin,TemplateView):
     template_name = 'checkout.html'
     login_url = "/usuario/"
     def get(self, request, *args, **kwargs):
-        session_key = request.session.session_key
-        if session_key and CartIten.objects.filter(cart_id=session_key).exists():
-            messages.info(request, 'Finalize sua Compra')
-            cart_items = CartIten.objects.filter(cart_id=session_key)
-            order = Order.objects.create_order(
-                user=request.user, cart_itens=cart_items
-            )
-        else:
-            messages.info(request, 'Não há itens no carrinho de compras')
-            return redirect('checkout:cart_view')
         response = super(CheckoutView, self).get(request, *args, **kwargs)
+        order = Order.objects.last()
         response.context_data['order'] = order
         return response
 checkout = CheckoutView.as_view()
@@ -104,7 +97,7 @@ checkout = CheckoutView.as_view()
 class OrderListView(LoginRequiredMixin,ListView):
     template_name='order_list.html'
     def get_queryset(self):
-        return Order.objects.filter(user=self.request.user)
+        return Order.objects.filter(Q(user=self.request.user,status=1) | Q(user=self.request.user,status=3) )
 
 order_list = OrderListView.as_view()
 
@@ -123,13 +116,13 @@ class PagSeguroView(LoginRequiredMixin, RedirectView):
             Order.objects.filter(user=self.request.user), pk=order_pk
         )
         pg = order.pagseguro()
-        #pg.redirect_url = self.request.build_absolute_uri(
-        #    reverse('checkout:order_detail', args=[order.pk])
-        #)
-        pg.redirect_url = 'www.google.com.br'
-        #pg.notification_url = self.request.build_absolute_uri(
-        #    reverse('checkout:pagseguro_notification')
-        #)
+        pg.redirect_url = self.request.build_absolute_uri(
+            reverse('checkout:order_detail', args=[order.pk])
+        )
+        #pg.redirect_url = 'www.google.com.br'
+        pg.notification_url = self.request.build_absolute_uri(
+            reverse('checkout:pagseguro_notification')
+        )
         response = pg.checkout()
         #print(dir(response))
         #print(response.code)
@@ -159,3 +152,24 @@ def pagseguro_notification(request):
         else:
             order.pagseguro_update_status(status)
     return HttpResponse('OK')
+    
+@csrf_exempt
+def frete(request):
+    if request.is_ajax():
+        resquest_data = request.POST
+        a=list(resquest_data.items())
+        frete=a[0][1] #valor
+        prazo=a[1][1] #prazo
+        session_key = request.session.session_key
+        if session_key and CartIten.objects.filter(cart_id=session_key).exists():
+            messages.info(request, 'Finalize sua Compra')
+            cart_items = CartIten.objects.filter(cart_id=session_key)
+            order = Order.objects.create_order(
+                user=request.user, cart_itens=cart_items,
+                frete=frete,prazo=prazo
+            )
+        else:
+            messages.info(request, 'Não há itens no carrinho de compras')
+            return redirect('checkout:cart_view')
+    return HttpResponse('OK')
+    

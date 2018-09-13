@@ -3,36 +3,33 @@
 {% block navuser %}
 {%load staticfiles%}
 <head>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
         var modo = "erro";
         var cepDestino = "erro";
+        var timeshow = 0;
+        var value = 0;
             $(document).ready(function(){
+                var cepDestino = $("#cep").prop("defaultValue");
+                console.log($("#cep").prop("defaultValue"));
+                console.log(cepDestino); 
                 $("#continue").click(function(){
-                    $("#quantidade").prop('disabled', true);
-                    $("#deletar").prop('disabled', true);
+                    $(".quantidade").prop('disabled', true);
+                    $(".deletar2").prop('disabled', true);
                     
                     $('#hide').show();
                     //$("#hide").css("display", "block");
                 });
 
                 $("#inputGroupSelect01").click(function(){
-                    $("#cep").prop('disabled', false);
-                    modo = this.value;
-                });
-
-                $("#cep").blur(function(){
                     $("#calcular").prop('disabled', false);
-                    cepDestino = this.value;
+                    modo = this.value;
                 });
 
                 $("#calcular").click(function() {
                     console.log(modo);
                     console.log(cepDestino);
-                    var url_base = "http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?"+
-                        "nCdEmpresa="+
-                        "&sDsSenha="+
-                        "&sCepOrigem={{origem}}" +
+                    var url_base = "http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?nCdEmpresa=Rodrigao1993&sDsSenha=ar2317211993&sCepOrigem={{origem}}" +
                         "&sCepDestino="+ cepDestino +
                         "&nVlPeso={{peso}}"+
                         "&nCdFormato={{formato}}"+
@@ -47,11 +44,12 @@
                         "&StrRetorno=xml"+
                         "&nIndicaCalculo=3";
                     $.ajax({
-                        type: "POST",
+
+                        type: "GET",
                         url: url_base,
                         crossDomain: false,
                         dataType: "xml",
-                        headers: {"Access-Control-Allow-Origin": "*",'X-Requested-With': 'XMLHttpRequest'},
+
                         beforeSend: function() {    
                             $("#load").text("Aguarde uns Instantes");
                         },
@@ -64,23 +62,53 @@
                                     $("#load").text("CEP INCORRETO, NÃO INSIRA . OU -");
                                 }
                                 else{
-                                    var value = $(this).find('Valor').text();
+                                    value = $(this).find('Valor').text();
                                     var time = $(this).find('PrazoEntrega').text()
-                                    var timeshow = parseInt(time)  +  5;
+                                    timeshow = parseInt(time)  +  5;
                                     $("#res-frete").text("R$:" + value);
                                     $("#res-prazo").text(timeshow + "dia(s)");
+                                    $("#opcPag").prop('disabled', false);
                                 }
                                 
                             });
                             console.log(xml);
                         },
                         error: function() {
-                            console.error("ERRO")
+                            if(cepDestino.length<8){
+                                $("#load").text("CEP informado Inválido");
+                            }else{
+                                $("#load").text("Obrigado por Esperar! S2");
+                                if(modo==41106){
+                                    value = 23.5;
+                                    var time  = 5; 
+                                }else{
+                                    value = 28.5;
+                                    var time  = 1;
+                                }
+                                timeshow = parseInt(time)  +  5;
+                                $("#res-frete").text("R$:" + value);
+                                $("#res-prazo").text(timeshow + "dia(s)");
+                                $("#opcPag").prop('disabled', false);
+                                
+                                
+                            }
+
                         }
                     });
                     
                 });
-                
+
+                $("#opcPag").click(function() {
+                    //ajax para atualizar o frete do pedido
+                    $.ajax({
+                        type: "POST",
+                        url: " {% url 'checkout:frete' %}",
+                        data: {'frete': value,'prazo':timeshow},
+                        success: function( ) {
+                            //alert('ok')
+                        },
+                    });
+                });
 
             });
     </script>
@@ -133,14 +161,14 @@
                     R$ {{ form.instance.price|floatformat:"2" }}
                 </td>
                 <td >
-                    {% render_field form.quantity class='form-control' id="quantidade" %} 
+                    {% render_field form.quantity class='form-control quantidade' %} 
                     <!--
                         Usando app que ajuda a deixar os forms bonitos :  widget_tweaks
                         agora eu posso colocar classes nos meus forms, como feito acima
                     -->
                 </td>
                 <td>
-                    <button value="on" type="submit" name="{{ form.DELETE.html_name }}" class="btn btn-danger btn-sm" id="deletar">Remover</button>
+                    <button value="on" type="submit" name="{{ form.DELETE.html_name }}" class="btn btn-danger btn-sm deletar2" id="deletar">Remover</button>
                     {{form.id}}
                 </td>
             </tr>
@@ -152,55 +180,70 @@
 <!--<a href="{% url 'checkout:checkout' %}" class="btn btn-success">Finaliar Compra</a>-->:
 </form>
 <br>
-<a href="{% url 'core:shop' %}" class="btn btn-default">Continuar Comprando</a>
-<button name="button" class="btn btn-success" id="continue">Finalizar Compra</button>
-<br>
-<br>
-<div class="col-md-8 col-md-offset-2">
-<table class="table table-bordered" id="hide" style="display:none;">
-        <thead>         
-                        <th>
-                            Envio
-                        </th>
-                        <th> 
-                            CEP
-                        </th>
-                        <th>
-                            Calcular
-                        </th>
-                        <th>
-                            Frete
-                        </th>
-                        <th>
-                            Prazo
-                        </th>
-        </thead>
-    
-        <tbody>
-                <div class="input-group mb-3">
-                <tr>
-                    <td style="padding-top:22px;">
-                            <select class="custom-select" id="inputGroupSelect01">
-                                    <option value="40010" selected>Sedex </option>
-                                    <option value="41106">PAC</option>
-                            </select>
-                    </td>
-                    <td>
-                            <input class="form-control form-control-lg" type="text" disabled="True" placeholder="CEP" id="cep">
-                    </td>
-                    <td style="padding-top:17px;">
-                            <button class="btn btn-success btn-sm" id="calcular" disabled="True" >Calcular</button>   
-                    </td>
-                    <td style="padding-top:22px;">
-                            <p id="res-frete"></p>
-                    </td>
-                    <td style="padding-top:22px;">
-                            <p id="res-prazo"></p>
-                    </td>
-                </tr>
-                </div>
-        </tbody>
-    </table>
-    <h4 class="text-center" id="load"></h4>
-</div>
+{% if user.is_authenticated %}
+    {% if user.profile.adress_completed %}
+        <a href="{% url 'core:shop' %}" class="btn btn-default">Continuar Comprando</a>
+        <button name="button" class="btn btn-success" id="continue">Finalizar Compra</button>
+        <br>
+        <br>
+        <div class="">
+        <table class="table table-bordered" id="hide" style="display:none;">
+                <thead>         
+                                <th>
+                                    Envio
+                                </th>
+                                <th> 
+                                    CEP
+                                </th>
+                                <th>
+                                    Calcular
+                                </th>
+                                <th>
+                                    Frete
+                                </th>
+                                <th>
+                                    Prazo
+                                </th>
+                </thead>
+            
+                <tbody>
+                        <div class="input-group mb-3">
+                        <tr>
+                            <td style="padding-top:22px;">
+                                    <select class="custom-select" id="inputGroupSelect01">
+                                            <option value="40010" selected>Sedex </option>
+                                            <option value="41106">PAC</option>
+                                    </select>
+                            </td>
+                            <td>
+                                    <input class="form-control form-control-lg" type="text" disabled="True" placeholder="CEP" id="cep" value={{user.profile.cep}}>
+                            </td>
+                            <td style="padding-top:17px;">
+                                    <button class="btn btn-success btn-sm" id="calcular" disabled="True" >Calcular</button>   
+                            </td>
+                            <td style="padding-top:22px;">
+                                    <p id="res-frete"></p>
+                            </td>
+                            <td style="padding-top:22px;">
+                                    <p id="res-prazo"></p>
+                            </td>
+                        </tr>
+                        </div>
+                </tbody>
+            </table>
+            <h4 class="text-center" id="load"></h4>
+        </div>
+        <div class="col-sm-12 text-center">
+            <a href="{% url 'checkout:checkout' %}"><button class="btn btn-success" id="opcPag" disabled="True" >Opções de Pagamento</button></a>
+        </div>
+    {% else %}
+        Complete o CADASTRO!
+    {% endif %}
+
+{% else %}
+
+<a href="{% url 'accounts:login' %}"><h3>Faça o Login para Finalizar</h3></a>
+
+{% endif %}
+
 {% endblock %}

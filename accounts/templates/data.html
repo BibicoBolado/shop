@@ -11,11 +11,16 @@
             {% endfor %}
     {% endif %}
     <div class="col-sm-6">
-        <h3>Dados</h3>
-        <li>Username: {{ user.username }}</li>
-        <li>Nome: {{ user.profile.name }}</li>
-        <li>Aniversário: {{ user.profile.birthday }}</li>
-        <h4>Para atualizar sua conta clique <a href="{% url 'accounts:update_profile' %}">Aqui</a></h4>
+        <h3>Dados de Envio</h3>
+        <li><strong>Nome:</strong> {{ user.profile.name }}</li>
+        <li><strong>Rua</strong>: {{ user.profile.address }}</li>
+        <li><strong>Número</strong>: {{ user.profile.number }}</li>
+        <li><strong>UF</strong>: {{ user.profile.uf }}</li>
+        <li><strong>Complemento</strong>: {{ user.profile.complemento }}</li>
+        <li><strong>CEP</strong>: {{ user.profile.cep }}</li>
+        <li><strong>Cidade</strong>: {{ user.profile.cidate }}</li>
+        <li><strong>Bairro</strong>: {{ user.profile.bairro }}</li>
+        <h4>Para atualizar clique <a href="{% url 'accounts:update_profile' %}">Aqui</a></h4>
     </div>
 
     
