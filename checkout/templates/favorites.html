@@ -2,55 +2,27 @@
 {% load widget_tweaks %}
 
 {% block navuser %}
-<head>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<!-- Adicionando Javascript -->
-<script type="text/javascript" >
-    var url_base = "http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?"+
-    "nCdEmpresa="+
-    "&sDsSenha="+
-    "&sCepOrigem=25905860"+
-    "&sCepDestino=25905860"+
-    "&nVlPeso=1"+
-    "&nCdFormato=1"+
-    "&nVlComprimento=30"+
-    "&nVlAltura=30"+
-    "&nVlLargura=30"+
-    "&sCdMaoPropria=n"+
-    "&nVlValorDeclarado=0"+
-    "&sCdAvisoRecebimento=n"+
-    "&nCdServico=41106"+
-    "&nVlDiametro=0"+
-    "&StrRetorno=xml"+
-    "&nIndicaCalculo=3"
-    
-    $(document).ready(function(){
-        $("#cep").blur(function() {
-            console.log("aqui1")
-            $.ajax({
-                type: "GET",
-                url: url_base,
-                dataType: "xml",
-                headers: {
-                    "Access-Control-Allow-Origin": "http://127.0.0.1:8000,http://ws.correios.com.br"
-                },
-                success: function( xml ) {
-                    console.log(xml);
-                },
-                error: function() {
-                    console.error("ERRO")
-                }
-            });
-            
-        });
-    });
-</script>
-</head>
-
-
 <body>
-
-<input type="text" id="cep">                       
-<p id="teste">HA HA</p>
+    {% if favorits %}
+        <div class="page-header">
+            <h1>Favoritos</h1>
+        </div>
+        <div class="container-fluid container-index">
+                {% for favorit in favorits %}
+                <a href="{% url 'core:itenPortifolio' favorit.project.slug %}">
+                  <div class="columncatalog">
+                    <img class="destaque-image-catalog" src="{{favorit.project.imagemin.url}}"  alt="{{favorit.project.name}}">
+                    <div class="overlay">{{favorit.project.name}}</div>
+                  </div>
+                </a>
+                {% endfor %}
+            
+            </div>
+    {% else %}
+        <div class="page-header">
+            <h1>De uma olhada em nosso <a href="{% url 'core:portifolio' %}">Portiólio!</a></h1>
+            <h3>Para Favoritar basta Clicar no Coração ao Lado do Nome</h3>
+        </div>
+    {% endif %}
 </body>
 {% endblock %}

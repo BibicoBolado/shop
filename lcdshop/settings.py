@@ -158,9 +158,9 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-PAGSEGURO_TOKEN = 'A96D94D77E10490794FA49A8477DB328'
+PAGSEGURO_TOKEN = '2C4F01D4373542819BCA3CBEBD716CDF'
 PAGSEGURO_EMAIL = 'rodrigosiqueira@id.uff.br'
-PAGSEGURO_SANDBOX = True
+PAGSEGURO_SANDBOX = False
 
 try:
     from .local_settings import *
@@ -174,3 +174,16 @@ LARGURA             = 30
 ALTURA              = 20
 CEP_ORIGEM          = 25905860
 FORMATO             = 1
+
+#EMAIL
+#EMAIL_BACKEND       = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_BACKEND       = 'django.core.mail.backends.smtp.EmailBackend'
+DEFAULT_FROM_EMAIL  = 'rodrigao1993@gmail.com'
+EMAIL_USE_TLS       = True
+EMAIL_HOST          = '64.233.184.108'
+#essa porra de cima me deu maior dor de cabeça!!!
+EMAIL_HOST_USER     = 'rodrigao1993@gmail.com'
+EMAIL_HOST_PASSWORD = 'ar2317211993'
+EMAIL_PORT          = 587
+
+CONTACT_EMAIL       = 'rodrigosiqueira@id.uff.br'

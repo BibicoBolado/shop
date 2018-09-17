@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {%load staticfiles%}
+{% load pagination %}
 {% block top %} 
 
 {% endblock %}
@@ -76,6 +77,8 @@
                 </div>
         </div>
     {% endfor %}
-</div>
 
+
+</div>
+{% pagination request paginator page_obj %}
 {% endblock %}  

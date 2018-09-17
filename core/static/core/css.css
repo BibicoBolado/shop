@@ -224,7 +224,9 @@ hrv{
 .post-iten-text{
     padding: 20px 50px 20px 50px;
 }
-
+.material-icons{
+    cursor: pointer;
+}
 .img-project{
     cursor: pointer;
 }

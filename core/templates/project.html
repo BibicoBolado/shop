@@ -1,12 +1,84 @@
 {% extends 'base.html' %}
 {%load staticfiles%}
-{% block top %} 
 
+
+
+{% block top %} 
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <script>
+        $(document).ready(function(){
+          var color =  $("#favorite").attr('name');
+          console.log(color);
+
+          $("#favoriteUser").click(function(){
+            alert("Você Precisa Estar Logado para Salvar um Projeto!")
+          });
+
+          $("#favorite").click(function(){
+            
+            if(color == "black"){
+              $(this).css("color","red");
+              color = "red";
+              console.log(color);
+              alert("Projeto Salvo!")
+            }
+            else{
+              $(this).css("color","black");
+              color = "black";
+              console.log(color);
+              alert("Clique de novo para Salvar!")
+            }
+            
+            
+            $.ajax({
+              
+              type: "POST",
+              url: " {% url 'core:favoriteProject' %}",
+              data: {'project': '{{project.slug}}' },
+              success: function( ) {
+                  //alert('ok')
+              },
+            });
+          });
+
+
+        });
+    </script>
+</head>
 {% endblock %}
 
 {% block menuSide %}
+
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'core:portifolio' %}">Portifolio</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'core:categoryCatalog' project.category.slug %}">{{project.category}}</a></li>
+          <li class="breadcrumb-item active" aria-current="page">{{project.name}}</li>
+        </ol>
+    </nav>
 <div class="container-fluid text-center">
-    <h1 class="text-center">{{project.name}}</h1>
+    <form>
+      {% csrf_token %}
+          <h1 class="text-center">{{project.name}}
+          {% if user.is_authenticated %}
+            {% if a %}
+
+            <i class="material-icons" style="font-size:30px;color:red;" id="favorite" name="red">favorite</i> 
+            
+            {% else %}
+            
+            <i class="material-icons" style="font-size:30px;" id="favorite" name="black">favorite</i>
+            
+            {% endif %}
+          {% else %}
+          <i class="material-icons" style="font-size:30px;" id="favoriteUser" >favorite</i>
+          {% endif %}
+      </form>
+    </h1>
     <h4>{{project.description}}</h4>
     <hr>
     <div class="row">
@@ -39,7 +111,7 @@
         
     </div>
     {% endfor %}
-    </div> 
+    </div>
 </div>  
 
 {% endblock %}

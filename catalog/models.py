@@ -1,5 +1,6 @@
 # coding=utf-8
 from django.db import models
+from django.conf import settings
 
 class CategoryCatalog(models.Model):
     name     =      models.CharField('Nome',max_length = 150)
@@ -58,3 +59,30 @@ class Image(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class FavoriteProjectManager(models.Manager):
+    def creat_favorite(self,user,project):
+        if self.filter(user = user, project = project ).exists():
+            a  =  self.filter(user = user, project = project )
+            a.delete()
+        else:
+            a = self.create(user = user, project = project)
+            a.save()
+        return a
+class FavoriteProject(models.Model):
+    user        = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete='CASCADE',verbose_name='Usuário')
+    project     = models.ForeignKey('catalog.Project',verbose_name='Favorito',on_delete=models.CASCADE)
+    created     =      models.DateTimeField('Criado em:',auto_now_add=True)
+    modified    =      models.DateTimeField('Atualizado em:',auto_now=True)
+
+    objects = FavoriteProjectManager()
+
+    class Meta:
+        verbose_name = 'Projeto Favorito'
+        verbose_name_plural = 'Projetos Favoritos'
+        ordering = ['project']
+        unique_together = (("user", "project"),)
+
+    def __str__(self):
+        return '{} | {}'.format(self.project.name,self.user.username)

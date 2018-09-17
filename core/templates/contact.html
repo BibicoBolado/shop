@@ -5,9 +5,16 @@
 {% endblock %}
 
 {% block menuSide %}
-<form id="formContact">
+{% if messages %}
+{% for message in messages %}
+    <div class="alert alert-{{message.tags}}">
+        {{ message }}
+    </div>
+{% endfor %}
+{% endif %}
+<form id="formContact" action="#contact" method="post">
+    {% csrf_token %}
     {% for field in form %}
-    <script>console.log({{forloop.counter}})</script>
     {% if forloop.last%}
         <br>
         <div id="file">
@@ -24,6 +31,8 @@
 </form>
 <script type="text/javascript" src="{% static 'controller/contactcontroller.js' %}"> </script>
 <script type="text/javascript" src="{% static 'contatact.js' %}"> </script>
+
+
 {% endblock %}
 
 {% block bot %} 

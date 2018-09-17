@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {%load staticfiles%}
+{% load pagination %}
 {% block top %} 
 
 
@@ -29,30 +30,27 @@
         </div>
 </nav>
 <!--FINAL DA BARRA DE NAGEVAÇÃO-->
-<div class="container">
+<div class="container-fluid container-index">
 
-
-  <div class="col-sm-8">
-    {% for postbot in postbot %}
+  <div>
+    {% for post in post_list %}
     <div class="row">
         <div class="col-sm-6">
-          <a href="{% url 'core:itenBlog' postbot.slug %}"><img class="img-post-list" src="{{postbot.imgcapa.url}}"  alt="{{postbot.name}}" style="width:100%"></a>
+          <a href="{% url 'core:itenBlog' post.slug %}"><img class="img-post-list" src="{{post.imgcapa.url}}"  alt="{{post.name}}" style="width:100%"></a>
         </div>
         <div class="col-sm-6">
-          <a href="{% url 'core:itenBlog' postbot.slug %}"><h3>{{postbot.name}}</h3></a>
-            <p>{{postbot.cutAbout}} <a href="{% url 'core:itenBlog' postbot.slug %}"><strong>...</strong></a> </p>
-            <p style="color:lightgreen;">Nº Leituras: {{postbot.nreads}}</p>
-            <p style="color:lightpink;">{{postbot.created.day}} / {{postbot.created.month}}</p>
+          <a href="{% url 'core:itenBlog' post.slug %}"><h3>{{post.name}}</h3></a>
+            <p>{{post.cutAbout}} <a href="{% url 'core:itenBlog' post.slug %}"><strong>...</strong></a> </p>
+            <p style="color:lightgreen;">Nº Leituras: {{post.nreads}}</p>
+            <p style="color:lightpink;">{{post.created.day}} / {{post.created.month}}</p>
           </div>
     </div>
     {% endfor %}
   </div>
-  
-  
-  <div class="col-sm-4">
-  
+
+  {% pagination request paginator page_obj %}
   </div>
-  </div>
+
 {% endblock %}
 
 {% block bot %} 

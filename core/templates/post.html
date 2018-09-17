@@ -5,6 +5,13 @@
 {% endblock %}
 
 {% block menuSide %}
+<nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'core:blog' %}">Blog</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'core:categoryBlog' post.Category.slug %}">{{post.Category}}</a></li>
+          <li class="breadcrumb-item active" aria-current="page">{{post.name}}</li>
+        </ol>
+</nav>
 <div class="container-fluid text-center">
     <h1>{{post.name}}</h1>
     <br>

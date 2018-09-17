@@ -19,6 +19,7 @@ urlpatterns=[
     path('loja/<slug:slug>',views.itenShop,name='itenShop'),
     path('blog/<slug:slug>',views.itenBlog,name='itenBlog'),
     path('portifolio/<slug:slug>',views.itenPortifolio,name='itenPortifolio'),
-    #Usuarios
+    #Favoritando Projeto
+    path('portifolio/favoritar/',views.favoriteProject,name='favoriteProject'),
 
 ]

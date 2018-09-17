@@ -4,6 +4,7 @@ from django.views.generic import RedirectView, TemplateView,ListView,DetailView
 from django.contrib import messages
 from shop.models import Product
 from .models import CartIten,Order
+from catalog.models import FavoriteProject
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import modelformset_factory
 from django.urls import reverse
@@ -15,8 +16,11 @@ from django.db.models import Q
 
 
 def favorites(request):
+    favorit = FavoriteProject.objects.filter(user=request.user)
+    context={}
+    context['favorits'] = favorit
     template_name = 'favorites.html'
-    return render (request,template_name)
+    return render (request,template_name,context)
 
 class CreateCartItemView(RedirectView):
     def get_redirect_url(self,*args,**kwargs):

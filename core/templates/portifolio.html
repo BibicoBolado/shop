@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {%load staticfiles%}
+{% load pagination %}
 {% block top %} 
 
 {% endblock %}  
@@ -37,7 +38,7 @@
 {% block bot %} 
 
 <div class="container-fluid container-index">
-    {% for project in project %}
+    {% for project in project_list %}
     <a href="{% url 'core:itenPortifolio' project.slug %}">
       <div class="columncatalog">
         <img class="destaque-image-catalog" src="{{project.imagemin.url}}"  alt="{{project.name}}">
@@ -45,6 +46,7 @@
       </div>
     </a>
     {% endfor %}
-</div>
 
+</div>
+{% pagination request paginator page_obj %}
 {% endblock %}  
